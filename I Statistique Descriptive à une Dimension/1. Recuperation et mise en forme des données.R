@@ -40,10 +40,14 @@ summary(grossistes)
 str(grossistes)
 
 
-#3. Recuperation Nom Ligne, et Nom Colonnes:
+#3. Comment récupérer les noms des lignes et des colonnes ?
+colnames(grossistes) #Récupère les noms de colonnes
+rownames(grossistes) #Récupère les lignes de colonnes
 
 
 #4. Créer une variable produitsFrais contenant la 3ème colonne du dataset de 3 manières différentes. 
 produitsFrais1 <- grossistes$Fresh #En Colonnes
-produitsFrais2 <- grossistes[3]    #En DataSet
+produitsFrais2 <- grossistes[,3]   #En Colonnes la virgule évite l'importation en dataset
+produitsFrais3 <- grossistes[,'Fresh'] #En Colonnes la virgule évite l'importation en dataset
+produitsFrais4 <- subset(x = grossistes, select = 'Fresh')$Fresh #En Colonne car on récupère uniquement la colonne Fresh du dataset généré
 
