@@ -42,12 +42,14 @@ Frozen <- sample(na.omit(grossistes$Frozen), size = 60)
 effectif <- nrow(as.array(Frozen)) #On fait un as array car nrow ne travail pas avec des vecteur colonnes
 moyenne <- mean(Frozen)
 mediane <- median(Frozen)
-ecart_type <- sd(Frozen)
 
-ecart_type2 <- sqrt((sum((Frozen - mean(Frozen))^2) / (effectif-1)))
+
+ecart_type <- sd(Frozen)
+# Calcul Ecart Type Echantillon sd() calcul donc uniquement les écart types d'échantillon, et non de population.
+ecart_type2 <- sqrt((sum((Frozen - mean(Frozen))^2) / (effectif - 1)))
 
 # On demande aussi de construire au fur et à mesure un vecteur grossistes.surgeles.echantillon.descriptive 
 # contenant l'effectif, la moyenne, l'écart-type (de l'échantillon) et la médiane 
 # avec des noms de colonnes appropriés :
 
-grossistes.surgeles.echantillon.descriptive <- data.frame(effectif, moyenne, ecart_type, mediane)
+grossistes.surgeles.echantillon.descriptive <- data.frame(effectif, moyenne, ecart_type2, mediane)

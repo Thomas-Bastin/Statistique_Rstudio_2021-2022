@@ -30,50 +30,148 @@ name[which(name == 'Detergents_Paper', arr.ind = T)] <- 'DetergentsPaper'
 colnames(grossistes) <- name
 summary(grossistes)
 str(grossistes)
+
+s <- function(X)
+return( 
+        sqrt( sum((X - mean(X))^2) / (length(X)) ) 
+      )
+
+grossistes <- na.omit(grossistes)
 #FIN HEADER
 
 #1. un histogramme en densité des achats en produits laitiers; comment vérifier qu'il s'agit
 #   bien d'une densité de probabilité?
-
-datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = sd(grossistes$Milk))
-histogramme <- hist(datanorm, nclass = 20, freq = FALSE)
+x11()
+datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = s(grossistes$Milk))
+histogramme <- hist(datanorm, nclass = 10, freq = FALSE,xlim = c(-30000,40000), ylim = c(0,0.00006))
 
 histogramme$breaks
 histogramme$density
 area <- sum( diff(histogramme$breaks) * histogramme$density)
-printf("Area: %f",area)
-
-
+printf("Area histogramme: %f",area)
 breaks1 <- histogramme$density
 
+
+
 #2. un histogramme amélioré qui regroupe les dernières classes;
-datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = sd(grossistes$Milk))
-histogrammeAmeliore <- hist(datanorm, freq = FALSE, breaks = c(-30000,-10000,0,15000,20000,40000))
+x11()
+datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = s(grossistes$Milk))
+histogrammeAmeliore <- hist(datanorm, freq = FALSE, breaks = c(-30000, -15000,-5000,0,5000,15000,20000,40000), xlim = c(-30000,40000), ylim = c(0,0.00006))
 
 histogrammeAmeliore$breaks
 histogrammeAmeliore$density
 area <- sum( diff(histogrammeAmeliore$breaks) * histogrammeAmeliore$density)
-printf("Area: %f",area)
+printf("Area histogramme ameliorer: %f",area)
+
 
 #3. un graphique linéaire type "polygone des effectifs";
+x11()
+plot(histogramme$mids,histogramme$density,type="b", lty=1, xlim = c(-30000,40000), ylim = c(0,0.00006))
+
 
 #4. la superposition de l'histogramme et du polygone des effectifs pour l'épicerie;
+x11()
+datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Grocery), sd = s(grossistes$Grocery))
+histogrammeEpicerie <- hist(datanorm, freq = FALSE, nclass = 10, xlim = c(-30000,40000), ylim = c(0,0.00006))
+par(new = T)
+plot(x = histogrammeEpicerie$mids, y = histogrammeEpicerie$density, type="b", lty=1,xlab = "", ylab ="", xlim = c(-30000,40000), ylim = c(0,0.00006))
+
 
 #5. un graphique des effectifs cumulés;
+x11()
+density <- histogrammeEpicerie$density
+mids <- histogrammeEpicerie$mids
+densitycumsum <- cumsum(histogrammeEpicerie$density)
+plot(x = histogrammeEpicerie$mids, y = densitycumsum, type="b", lty=1,xlab = "", ylab ="", xlim = c(-30000,40000), ylim = c(0,0.00020))
+
 
 #6. la ventilation des observations par région
+x11()
+# Creation des agrégats / ventilations en fonction des régions
+VentilationFresh <- aggregate(x = grossistes[,3] , by = grossistes['Region'], FUN = sum)
+VentilationMilk <- aggregate(x = grossistes[,4] , by = grossistes['Region'], FUN = sum)
+VentilationGrocery <- aggregate(x = grossistes[,5] , by = grossistes['Region'], FUN = sum)
+VentilationFrozen <- aggregate(x = grossistes[,6] , by = grossistes['Region'], FUN = sum)
+VentilationDetergentsPaper <- aggregate(x = grossistes[,7] , by = grossistes['Region'], FUN = sum)
+VentilationDelicassen <- aggregate(x = grossistes[,8] , by = grossistes['Region'], FUN = sum)
+
+# Creation des zones d'affichage
+zones <- matrix(c(1,2,3,4,5,6), ncol = 3)
+layout(zones)
+layout.show(max(zones))
+
+# Creations des Camemberts
+pie(x = VentilationFresh$x, labels = VentilationFresh$Region, main = "Fresh", radius = 1.2)
+pie(x = VentilationMilk$x, labels = VentilationMilk$Region, main = "Milk", radius = 1.2)
+pie(x = VentilationGrocery$x, labels = VentilationGrocery$Region, main = "Grocery", radius = 1.2)
+pie(x = VentilationFrozen$x, labels = VentilationFrozen$Region, main = "Frozen", radius = 1.2)
+pie(x = VentilationDetergentsPaper$x, labels = VentilationDetergentsPaper$Region, main = "DetergentsPaper", radius = 1.2)
+pie(x = VentilationDelicassen$x, labels = VentilationDelicassen$Region, main = "Delicassen", radius = 1.2)
+
 
 #7. une représentation des achats en surgelés en fonction des produits frais; une deuxième
 #   représentation en se limitant à des achats en surgelés inférieurs ou égaux à 5000;
+x11()
+zones <- matrix(c(1,2), ncol = 2)
+layout(zones)
+layout.show(max(zones))
 
-#8. une représentation des achats en produit frais par région; même question si on se limite à
-#   des achats inférieurs à 4000;
+plot(x = grossistes$Frozen, y = grossistes$Fresh ,type="p", lty=1,  xlab = 'Frozen', ylab = 'Fresh')
+achat <- subset(grossistes, subset = Frozen <= 5000) 
+plot(x = achat$Frozen, y = achat$Fresh, type="p", lty=1, xlab = 'Frozen', ylab = 'Fresh')
+
+
+#8. une représentation des achats en produit frais par région; 
+#   même question si on se limite à des achats inférieurs à 4000;
+x11()
+zones <- matrix(c(1,2), ncol = 2)
+layout(zones)
+layout.show(max(zones))
+
+achat <- subset(grossistes, select = c('Region','Fresh')) 
+barplot(table(achat$Region)) #table calcul l'effectif de chaque groupe (Region)
+
+barplot(table(subset(achat, subset = Fresh <= 4000)$Region))
+
 
 #9. une représentation des achats en produit frais par région et par source des achats;
+x11()
+zones <- matrix(c(1,2), ncol = 2)
+layout(zones)
+layout.show(max(zones))
+
+barplot(table(subset(grossistes, select = c('Channel','Fresh'))$Channel)) #table calcul l'effectif de chaque groupe (Source Achat)
+
+barplot(table(subset(grossistes, select = c('Region','Fresh'))$Region)) #table calcul l'effectif de chaque groupe (Source Achat)
+
 
 #10. une comparaison de la répartition Horeca/Détaillant selon la région;
+x11()
+Horeca_Detaillant <- subset(x = grossistes,select = c('Region','Channel'))
+plot(Horeca_Detaillant$Channel~Horeca_Detaillant$Region, xlab = 'Region', ylab = 'Channel')
+
 
 #11. une comparaison des achats d'épicerie générale selon le canal et la région;
+x11()
+data <- aggregate(x = grossistes['Grocery'] , by = c(grossistes['Region'],  grossistes['Channel']), FUN = sum)
 
-#12. deux nuages de points superposés des achats de produits frais en fonction des achats de
-#    produits surgelés selon le canal d'achat;
+data1 <- subset(data, subset = Channel == 'Restauration')
+data2 <- subset(data, subset = Channel == 'Détaillants')
+
+Vent_Grocery_RegionChannel <- matrix(c(data1$Grocery,data2$Grocery), nrow = 3)
+barplot(Vent_Grocery_RegionChannel, beside = T, names.arg = c("Restauration","Détaillants"), col = c("bisque2","brown1","chocolate1"))
+legend("topleft", legend = c("Lisbonne","Porto","Autre"), fill = c("bisque2","brown1","chocolate1"))
+
+
+#12.  deux nuages de points superposés 
+#     des achats de produits frais en fonction des achats de produits surgelés 
+#     selon le canal d'achat;
+x11()
+
+gDét <- subset(x = grossistes, subset = (Channel == 'Détaillants'), select = c('Fresh','Frozen'))
+plot(y = gDét$Fresh, x = gDét$Frozen, type="p", xlim = c(0,20000), ylim = c(0,45000), xlab = "Frozen", ylab = "Fresh", col = "chocolate2", pch = 20)
+
+par(new = T)
+
+gRest <- subset(x = grossistes, subset = (Channel == 'Restauration'), select = c('Fresh','Frozen'))
+plot(y = gRest$Fresh, x = gRest$Frozen, type="p", xlim = c(0,20000), ylim = c(0,45000), xlab = "Frozen", ylab = "Fresh", col = "chartreuse3", pch = 20)

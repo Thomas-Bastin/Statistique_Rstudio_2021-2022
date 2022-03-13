@@ -48,5 +48,4 @@ length(grossistes_frozen2)
 mysample <- sample(grossistes_frozen3, size = 60)
 
 # Comment faire si on ne dispose pas d'une telle fonction ?
-
 #Voir Page 6 Chapitre 4
