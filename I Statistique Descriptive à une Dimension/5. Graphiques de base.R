@@ -32,9 +32,7 @@ summary(grossistes)
 str(grossistes)
 
 s <- function(X)
-return( 
-        sqrt( sum((X - mean(X))^2) / (length(X)) ) 
-      )
+return(sqrt( sum((X - mean(X))^2) / (length(X))))
 
 grossistes <- na.omit(grossistes)
 #FIN HEADER
@@ -42,21 +40,21 @@ grossistes <- na.omit(grossistes)
 #1. un histogramme en densité des achats en produits laitiers; comment vérifier qu'il s'agit
 #   bien d'une densité de probabilité?
 x11()
-datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = s(grossistes$Milk))
-histogramme <- hist(grossistes$Milk, nclass = 10, freq = FALSE,xlim = c(-30000,40000), ylim = c(0,0.00006))
+histogramme <- hist(grossistes$Milk, freq = F, nclass = 30)
 
 histogramme$breaks
 histogramme$density
+
 area <- sum( diff(histogramme$breaks) * histogramme$density)
 printf("Area histogramme: %f",area)
-breaks1 <- histogramme$density
-
-
 
 #2. un histogramme amélioré qui regroupe les dernières classes;
 x11()
-datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = s(grossistes$Milk))
-histogrammeAmeliore <- hist(datanorm, freq = FALSE, breaks = c(-30000, -15000,-5000,0,5000,15000,20000,40000), xlim = c(-30000,40000), ylim = c(0,0.00006))
+
+mybreaks <- histogramme$breaks[1:12]
+mybreaks[12]<-max(grossistes$Milk)
+
+histogrammeAmeliore <- hist(grossistes$Milk, freq = FALSE, breaks = mybreaks)
 
 histogrammeAmeliore$breaks
 histogrammeAmeliore$density
@@ -64,25 +62,22 @@ area <- sum( diff(histogrammeAmeliore$breaks) * histogrammeAmeliore$density)
 printf("Area histogramme ameliorer: %f",area)
 
 
+
 #3. un graphique linéaire type "polygone des effectifs";
 x11()
-plot(histogramme$mids,histogramme$density,type="b", lty=1, xlim = c(-30000,40000), ylim = c(0,0.00006))
+plot(histogramme$mids,histogramme$density, type = "b", lty = 1)
 
 
 #4. la superposition de l'histogramme et du polygone des effectifs pour l'épicerie;
 x11()
-datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Grocery), sd = s(grossistes$Grocery))
-histogrammeEpicerie <- hist(datanorm, freq = FALSE, nclass = 10, xlim = c(-30000,40000), ylim = c(0,0.00006))
-par(new = T)
-plot(x = histogrammeEpicerie$mids, y = histogrammeEpicerie$density, type="b", lty=1,xlab = "", ylab ="", xlim = c(-30000,40000), ylim = c(0,0.00006))
+histogrammeEpicerie <- hist(grossistes$Grocery, freq = FALSE)
+lines(x = histogrammeEpicerie$mids, y = histogrammeEpicerie$density, type="b", lty=1,xlab = "", ylab ="")
 
 
 #5. un graphique des effectifs cumulés;
 x11()
-density <- histogrammeEpicerie$density
-mids <- histogrammeEpicerie$mids
-densitycumsum <- cumsum(histogrammeEpicerie$density)
-plot(x = histogrammeEpicerie$mids, y = densitycumsum, type="b", lty=1,xlab = "", ylab ="", xlim = c(-30000,40000), ylim = c(0,0.00020))
+densitycumsum <- cumsum(histogrammeEpicerie$counts)
+plot(x = histogrammeEpicerie$mids, y = densitycumsum, type="b",lty = 1)
 
 
 #6. la ventilation des observations par région
