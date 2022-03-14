@@ -39,25 +39,21 @@ N <- 15
 # a) Définir la plage de valeur acceptable pour moyenne d'échantillons
 
 # Soit moyenne de la distrib <- mu et ecart type de la distrib <- sigma/sqrt(N)
-muchapeau <- mu
 sigmaetoile <- sigma/sqrt(N)
 
-# marge = Z * sigmaetoile
-# Z = 1.96 pour 95%
+q975 <- qnorm(0.975, mu, sigmaetoile)
+q025 <- qnorm(0.025, mu, sigmaetoile)
+q975
+q025
 
-marge <- 1.96*sigmaetoile
-muChapeauMax <- mu + marge
-muChapeauMin <- mu - marge
-
-
-if(moyenneEchantillon >= muChapeauMin && moyenneEchantillon<= muChapeauMax){
+if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
   printf("\nEst un échantillons Normal\n")
 } else{
   printf("\nn'est pas un échantillons Normal\n")
 }
 # Dans notre cas, la moyenne de l'échantillons n'est pas normal pour un niveau de confiance de 95%
 
-
+sleep()
 
 #   8.2) Le contrôleur de production n'est pas trop rassuré et provoque une deuxième contrôle, cette fois sur 40 boulons.
 #        Les résultats de ses mesures sont :
@@ -80,19 +76,16 @@ moyenneEchantillon <- mean(echantillon)
 ecart_typeEchantillon <- sd(echantillon)
 
 #        Ce deuxième échantillon est-il à considérer comme "normal" ou pas pour un niveau de confiance de 95% ? 
-muchapeau <- mu
 sigmaetoile <- sigma/sqrt(N)
 
-# marge = Z * sigmaetoile
-# Z = 1.96 pour 95%
+q975 <- qnorm(0.975, mu, sigmaetoile)
+q025 <- qnorm(0.025, mu, sigmaetoile)
 
-marge <- 1.96*sigmaetoile
-muChapeauMax <- mu + marge
-muChapeauMin <- mu - marge
 
-if(moyenneEchantillon >= muChapeauMin && moyenneEchantillon<= muChapeauMax){
+if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
   printf("\nEst un échantillons Normal\n")
 } else{
   printf("\nn'est pas un échantillons Normal\n")
 }
 # Dans notre cas, la moyenne de l'échantillons n'est pas normal pour un niveau de confiance de 95%
+
