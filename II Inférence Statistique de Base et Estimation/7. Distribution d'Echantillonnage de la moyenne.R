@@ -12,11 +12,19 @@
 rm(list=ls())
 printf <- function(...) cat (sprintf(...))
 cls <- function() printf("\014")
-cls()
 setwd("E:\\HEPL\\R\\Statistique_Rstudio_2021-2022\\II Inférence Statistique de Base et Estimation")
 s <- function(X)
 return(sqrt( sum((X - mean(X))^2) / (length(X))))
+
+priseechant <- function(population){
+  population[,1] <- sample(1:20, 500, replace=T)
+  population_sort <- population[order(population[ , 1]),]
+  echantillon <- population_sort[1:20,2]
+  return (echantillon)
+}
+  
 #FIN HEADER
+cls()
 
       
 
@@ -26,22 +34,43 @@ return(sqrt( sum((X - mean(X))^2) / (length(X))))
 #   On suppose travailler sur une population de 500 pièces, 
 #   population normale ayant une
 #   moyenne pour le diamètre de 50 mm avec un écart-type de 1.7 mm.
-
 mu <- 50
 sigma <- 1.7
 
-pop <- runif(n = 500, min = 0, max = 100)
-#   ♦ on demande d'abord de construire un échantillon aléatoire selon le principe classique
+#     on demande d'abord de construire un échantillon aléatoire selon le principe classique
 #     suivant : 
 
 #     on associe à chaque élément de la population un nombre aléatoire (disons entre 0 et 100), 
 #     puis on trie selon ce nombre aléatoire et on conserve finalement les
 #     20 ou 40 premiers éléments pour former l'échantillon; on récupérera la moyenne de cet échantillon;
 
+# Creation Population
+population <- runif(500, min = 0, max = 100)
 
-#   ♦ on demande ensuite d'écrire un script R qui va générer 500 échantillons du type précédent;
+# Attache d'un vecteur random 
+random  <- sample(0:0, 500, replace=T)
+population <- cbind(random, population)
+
+# Premier Tri Random
+population[,1] <- sample(1:20, 500, replace=T)
+population_sort <- population[order(population[ , 1]),]
+echantillon <- population_sort[1:20,2] #Récupération des 20 premier de la col 2
+
+mean(echantillon)
+
+#     on demande ensuite d'écrire un script R qui va générer 500 échantillons du type précédent;
 #     les moyennes de ces échantillons seront placées dans un tableau "moyennes". échantillons;
 
+echant <- c(1:20)
+moyenne_echantillons <- c(1:500)
 
-#   ♦ il reste alors à représenter graphiquement la distribution de ces moyennes. 
-      
+# Premier Tri Random
+for(i in 1:500){
+  echant <- priseechant(population)
+  moyenne_echantillons[i] <- mean(echant)
+}
+
+#    il reste alors à représenter graphiquement la distribution de ces moyennes. 
+
+hist(moyenne_echantillons, freq = F, 30)
+

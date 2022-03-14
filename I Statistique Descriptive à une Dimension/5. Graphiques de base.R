@@ -43,7 +43,7 @@ grossistes <- na.omit(grossistes)
 #   bien d'une densité de probabilité?
 x11()
 datanorm <- rnorm(n = nrow(grossistes), mean = mean(grossistes$Milk), sd = s(grossistes$Milk))
-histogramme <- hist(datanorm, nclass = 10, freq = FALSE,xlim = c(-30000,40000), ylim = c(0,0.00006))
+histogramme <- hist(grossistes$Milk, nclass = 10, freq = FALSE,xlim = c(-30000,40000), ylim = c(0,0.00006))
 
 histogramme$breaks
 histogramme$density
