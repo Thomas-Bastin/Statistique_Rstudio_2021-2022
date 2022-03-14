@@ -3,7 +3,7 @@
 #   Arnone Matteo                                                             #
 #   Bastin Thomas                                                             #
 #   2201                                                                      #
-#   II.6. Utilisation de la loi normale                                       #
+#   II.7. Distribution d'Echantillonnage de la moyenne                        #
 #                                                                             #
 ###############################################################################
 
@@ -71,6 +71,4 @@ for(i in 1:500){
 }
 
 #    il reste alors à représenter graphiquement la distribution de ces moyennes. 
-
-hist(moyenne_echantillons, freq = F, 30)
-
+histo <- hist(moyenne_echantillons, freq = F, nclass = 30, main = "Distribution Moyenne des Echantillons", col = 'chartreuse3')
