@@ -33,7 +33,6 @@ mu <- 15
 sigma <- 0.25
 
 moyenneEchantillon <- 15.31
-ecart_typeEchantillon <- 0.29
 N <- 15
 
 # a) Définir la plage de valeur acceptable pour moyenne d'échantillons
@@ -41,10 +40,9 @@ N <- 15
 # Soit moyenne de la distrib <- mu et ecart type de la distrib <- sigma/sqrt(N)
 sigmaetoile <- sigma/sqrt(N)
 
-q975 <- qnorm(0.975, mu, sigmaetoile)
-q025 <- qnorm(0.025, mu, sigmaetoile)
-q975
-q025
+q975 <- qnorm(0.975, mean = mu, sd = sigmaetoile)
+q025 <- qnorm(0.025, mean = mu, sd = sigmaetoile)
+intervalmoy1 <- data.frame(q025,q975)
 
 if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
   printf("\nEst un échantillons Normal\n")
@@ -53,7 +51,6 @@ if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
 }
 # Dans notre cas, la moyenne de l'échantillons n'est pas normal pour un niveau de confiance de 95%
 
-sleep()
 
 #   8.2) Le contrôleur de production n'est pas trop rassuré et provoque une deuxième contrôle, cette fois sur 40 boulons.
 #        Les résultats de ses mesures sont :
@@ -65,8 +62,8 @@ echantillon <- c(15.21,15.56,15.63,15.54,15.22,15.77,
                  18.85,15.41,14.64,15.34,15.4,14.75,
                  15.76,14.8,15.42,15.88)
 
-#        Il réalise au préalable un diagramme à moustaches pour détecter les éventuelles valeurs aberrantes, 
-#        celles-ci étant éliminées du dataset. 
+# Il réalise au préalable un diagramme à moustaches pour détecter les éventuelles valeurs aberrantes, 
+# celles-ci étant éliminées du dataset. 
 
 mu <- 15
 sigma <- 0.25
@@ -75,12 +72,12 @@ N <- length(echantillon)
 moyenneEchantillon <- mean(echantillon)
 ecart_typeEchantillon <- sd(echantillon)
 
-#        Ce deuxième échantillon est-il à considérer comme "normal" ou pas pour un niveau de confiance de 95% ? 
+# Ce deuxième échantillon est-il à considérer comme "normal" ou pas pour un niveau de confiance de 95% ? 
 sigmaetoile <- sigma/sqrt(N)
 
-q975 <- qnorm(0.975, mu, sigmaetoile)
-q025 <- qnorm(0.025, mu, sigmaetoile)
-
+q975 <- qnorm(0.975, mean = mu, sd = sigmaetoile)
+q025 <- qnorm(0.025, mean = mu, sd = sigmaetoile)
+intervalmoy2 <- data.frame(q025,q975)
 
 if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
   printf("\nEst un échantillons Normal\n")

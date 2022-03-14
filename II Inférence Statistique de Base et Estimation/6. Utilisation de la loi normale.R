@@ -98,8 +98,6 @@ HER <- na.omit(HER)
 
       
 #j)   Quel poids moyen devrait-on atteindre à l'issue d'un programme diététique généralisé pour
-#     assurer qu'un(e) citoyen sur 10 seulement ait effectivement un poids supérieur à 85 kg ? 
-
-#     P(X>=85) = 0,1
+#     assurer qu'un(e) citoyen sur 10 seulement ait effectivement un poids supérieur à 85 kg ?
       
-      
+# Pas réussi
