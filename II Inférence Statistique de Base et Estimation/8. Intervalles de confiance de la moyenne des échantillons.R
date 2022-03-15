@@ -37,11 +37,8 @@ N <- 15
 
 # a) Définir la plage de valeur acceptable pour moyenne d'échantillons
 
-# Soit moyenne de la distrib <- mu et ecart type de la distrib <- sigma/sqrt(N)
-sigmaetoile <- sigma/sqrt(N)
-
-q975 <- qnorm(0.975, mean = mu, sd = sigmaetoile)
-q025 <- qnorm(0.025, mean = mu, sd = sigmaetoile)
+q975 <- qnorm(0.975, mean = mu, sd = sigma)
+q025 <- qnorm(0.025, mean = mu, sd = sigma)
 intervalmoy1 <- data.frame(q025,q975)
 
 if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
@@ -49,7 +46,9 @@ if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
 } else{
   printf("\nn'est pas un échantillons Normal\n")
 }
-# Dans notre cas, la moyenne de l'échantillons n'est pas normal pour un niveau de confiance de 95%
+# Dans notre cas, la moyenne de l'échantillons est normal pour un niveau de confiance de 95%
+
+
 
 
 #   8.2) Le contrôleur de production n'est pas trop rassuré et provoque une deuxième contrôle, cette fois sur 40 boulons.
@@ -67,16 +66,14 @@ echantillon <- c(15.21,15.56,15.63,15.54,15.22,15.77,
 
 mu <- 15
 sigma <- 0.25
-N <- length(echantillon)
+
 
 moyenneEchantillon <- mean(echantillon)
 ecart_typeEchantillon <- sd(echantillon)
+N <- length(echantillon)
 
-# Ce deuxième échantillon est-il à considérer comme "normal" ou pas pour un niveau de confiance de 95% ? 
-sigmaetoile <- sigma/sqrt(N)
-
-q975 <- qnorm(0.975, mean = mu, sd = sigmaetoile)
-q025 <- qnorm(0.025, mean = mu, sd = sigmaetoile)
+q975 <- qnorm(0.975, mean = mu, sd = sigma)
+q025 <- qnorm(0.025, mean = mu, sd = sigma)
 intervalmoy2 <- data.frame(q025,q975)
 
 if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
@@ -84,5 +81,5 @@ if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
 } else{
   printf("\nn'est pas un échantillons Normal\n")
 }
-# Dans notre cas, la moyenne de l'échantillons n'est pas normal pour un niveau de confiance de 95%
+# Dans notre cas, la moyenne de l'échantillons est normal pour un niveau de confiance de 95%
 

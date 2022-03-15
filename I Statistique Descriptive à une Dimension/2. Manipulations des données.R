@@ -50,17 +50,17 @@ dataRegionPorto <- subset(x = grossistes, subset = Region == 2)
 
 #4. Récupérer dans une variable les données correspondant à la région de Lisbonne 
 #   et à des achats de produits laitiers inférieurs à 500 m.u.
-dataLisbonneProduitLaitiers <- subset(x = grossistes, subset = Region == 1 & Milk < 500)
+dataLisbonneProduitLaitiers <- subset(x = grossistes, subset = Region == 1 && Milk < 500)
 
 #5. Combien y -a-t-il d'observations pour lesquelles toutes les variables ont une valeur connue ?
 nrowNotNaN <- nrow(na.omit(grossistes))
 #On récupère les tuples pour lesquels les cases sont nonvide, ensuite on fais un nrow deçus pour compté
 
 #6. Créer un dataset "grossistes.quanti" ne contenant que les variables quantitatives
-grossistes.quanti <- Filter(is.factor, grossistes)
+grossistes.quanti <- Filter(is.numeric, grossistes)
 
 #7. Créer un dataset " grossistes.quali" ne contenant que les variables qualititatives
-grossistes.quali <- Filter(is.numeric, grossistes)
+grossistes.quali <- Filter(is.factor, grossistes)
 
 #8. Créer un dataset à partir de grossistes en retirant les lignes correspondant à la région
 #"Other"
@@ -79,7 +79,6 @@ nrowAutreHoreca <- nrow(subset(x = grossistes, subset = Region == 3 & Channel ==
 nrowLisbonneRetail <- nrow(subset(x = grossistes, subset = Region == 1 & Channel == 2))
 nrowPortoRetail <- nrow(subset(x = grossistes, subset = Region == 2 & Channel == 2))
 nrowAutreRetail <- nrow(subset(x = grossistes, subset = Region == 3 & Channel == 2))
-
 
 #11. Plus compliqué: Changer les modalités de la variable "Channel" en "Restauration" et "Détaillants".
 levels(grossistes$Channel) <- c("Restauration", "Détaillants")

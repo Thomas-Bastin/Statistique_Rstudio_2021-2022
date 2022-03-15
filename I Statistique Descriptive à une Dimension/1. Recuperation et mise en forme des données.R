@@ -41,8 +41,8 @@ str(grossistes)
 
 
 #3. Comment récupérer les noms des lignes et des colonnes ?
-colnames(grossistes) #Récupère les noms de colonnes
-rownames(grossistes) #Récupère les lignes de colonnes
+nomcol <- colnames(grossistes) #Récupère les noms de colonnes
+nomlignes <- rownames(grossistes) #Récupère les lignes de colonnes
 
 
 #4. Créer une variable produitsFrais contenant la 3ème colonne du dataset de 3 manières différentes. 

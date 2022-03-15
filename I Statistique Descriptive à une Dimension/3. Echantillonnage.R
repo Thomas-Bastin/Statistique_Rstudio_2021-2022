@@ -42,10 +42,14 @@ grossistes_frozen3 <- grossistes$Frozen
 
 nrow(grossistes_frozen1)
 length(grossistes_frozen2)
+length(grossistes_frozen3)
 
 # puis de construire un échantillon de 60 éléments à partir des données
 # complètes en utilisant la fonction R sample().
 mysample <- sample(grossistes_frozen3, size = 60)
 
 # Comment faire si on ne dispose pas d'une telle fonction ?
-#Voir Page 6 Chapitre 4
+
+# Si on ne dispose pas d’une telle fonction, 
+# il suffit d’associer des nombres aléatoires à chaque élément de la population. 
+# Ensuite, de trier sur les nombres aléatoires et de prendre les 60 premiers pour constituer notre échantillon.

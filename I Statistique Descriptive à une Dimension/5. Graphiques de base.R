@@ -30,7 +30,7 @@ name[which(name == 'Detergents_Paper', arr.ind = T)] <- 'DetergentsPaper'
 colnames(grossistes) <- name
 summary(grossistes)
 str(grossistes)
-
+rm(name)
 s <- function(X)
 return(sqrt( sum((X - mean(X))^2) / (length(X))))
 
@@ -45,8 +45,11 @@ histogramme <- hist(grossistes$Milk, freq = F, nclass = 30)
 histogramme$breaks
 histogramme$density
 
+diff<-diff(histogramme$breaks)
+
 area <- sum( diff(histogramme$breaks) * histogramme$density)
 printf("Area histogramme: %f",area)
+
 
 #2. un histogramme amélioré qui regroupe les dernières classes;
 x11()
@@ -55,11 +58,6 @@ mybreaks <- histogramme$breaks[1:12]
 mybreaks[12]<-max(grossistes$Milk)
 
 histogrammeAmeliore <- hist(grossistes$Milk, freq = FALSE, breaks = mybreaks)
-
-histogrammeAmeliore$breaks
-histogrammeAmeliore$density
-area <- sum( diff(histogrammeAmeliore$breaks) * histogrammeAmeliore$density)
-printf("Area histogramme ameliorer: %f",area)
 
 
 
@@ -77,6 +75,7 @@ lines(x = histogrammeEpicerie$mids, y = histogrammeEpicerie$density, type="b", l
 #5. un graphique des effectifs cumulés;
 x11()
 densitycumsum <- cumsum(histogrammeEpicerie$counts)
+densitycumsum
 plot(x = histogrammeEpicerie$mids, y = densitycumsum, type="b",lty = 1)
 
 
@@ -112,6 +111,7 @@ layout(zones)
 layout.show(max(zones))
 
 plot(x = grossistes$Frozen, y = grossistes$Fresh ,type="p", lty=1,  xlab = 'Frozen', ylab = 'Fresh')
+
 achat <- subset(grossistes, subset = Frozen <= 5000) 
 plot(x = achat$Frozen, y = achat$Fresh, type="p", lty=1, xlab = 'Frozen', ylab = 'Fresh')
 
@@ -126,6 +126,10 @@ layout.show(max(zones))
 achat <- subset(grossistes, select = c('Region','Fresh')) 
 barplot(table(achat$Region)) #table calcul l'effectif de chaque groupe (Region)
 
+achat <- subset(grossistes, select = c('Region','Fresh'), subset = Fresh <= 4000)
+barplot(table(achat$Region))
+
+
 barplot(table(subset(achat, subset = Fresh <= 4000)$Region))
 
 
@@ -135,9 +139,11 @@ zones <- matrix(c(1,2), ncol = 2)
 layout(zones)
 layout.show(max(zones))
 
-barplot(table(subset(grossistes, select = c('Channel','Fresh'))$Channel)) #table calcul l'effectif de chaque groupe (Source Achat)
+achat <- subset(grossistes, select = c('Channel','Fresh'))
+barplot(table(achat$Channel)) #table calcul l'effectif de chaque groupe (Source Achat)
 
-barplot(table(subset(grossistes, select = c('Region','Fresh'))$Region)) #table calcul l'effectif de chaque groupe (Source Achat)
+achat <- subset(grossistes, select = c('Region','Fresh'))
+barplot(table(achat$Region)) #table calcul l'effectif de chaque groupe (Source Achat)
 
 
 #10. une comparaison de la répartition Horeca/Détaillant selon la région;

@@ -17,9 +17,9 @@ s <- function(X)
 return(sqrt( sum((X - mean(X))^2) / (length(X))))
 
 priseechant <- function(population){
-  population[,1] <- sample(1:20, 500, replace=T)
+  population[,1] <- sample(1:40, 500, replace=T)
   population_sort <- population[order(population[ , 1]),]
-  echantillon <- population_sort[1:20,2]
+  echantillon <- population_sort[1:40,2]
   return (echantillon)
 }
   
@@ -50,25 +50,25 @@ population <- runif(500, min = 0, max = 100)
 # Attache d'un vecteur random 
 random  <- sample(0:0, 500, replace=T)
 population <- cbind(random, population)
-
+rm(random)
 # Premier Tri Random
-population[,1] <- sample(1:20, 500, replace=T)
+population[,1] <- sample(1:40, 500, replace=T)
 population_sort <- population[order(population[ , 1]),]
-echantillon <- population_sort[1:20,2] #Récupération des 20 premier de la col 2
+echantillon <- population_sort[1:40,2] #Récupération des 20 premier de la col 2
 
 mean(echantillon)
 
 #     on demande ensuite d'écrire un script R qui va générer 500 échantillons du type précédent;
 #     les moyennes de ces échantillons seront placées dans un tableau "moyennes". échantillons;
 
-echant <- c(1:20)
-moyenne_echantillons <- c(1:500)
+echant <- c(1:40)
+moyennes <- c(1:500)
 
-# Premier Tri Random
+
 for(i in 1:500){
   echant <- priseechant(population)
-  moyenne_echantillons[i] <- mean(echant)
+  moyennes[i] <- mean(echant)
 }
 
 #    il reste alors à représenter graphiquement la distribution de ces moyennes. 
-histo <- hist(moyenne_echantillons, freq = F, nclass = 30, main = "Distribution Moyenne des Echantillons", col = 'chartreuse3')
+histo <- hist(moyennes, freq = F, nclass = 30, main = "Distribution Moyenne des Echantillons", col = 'chartreuse3')

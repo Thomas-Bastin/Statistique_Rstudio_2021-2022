@@ -50,11 +50,11 @@ HER <- na.omit(HER)
       moyenne <- mean(HER$POIDS)
       ecart_type <- sd(HER$POIDS)
       
+      hist(x = HER$POIDS, freq = F)
 
 #b)   Au niveau de la population, quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard
 #     ait un poids inférieure à 75 kg ?
       p1 <- pnorm(q = 75, sd = ecart_type, mean = moyenne, lower.tail = T)
-      p1 <- p1*100
       
 #c)   Quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard ait un poids compris dans la
 #     fourchette [80,95] ?
@@ -62,11 +62,11 @@ HER <- na.omit(HER)
       pmax <- pnorm(q = 95, sd = ecart_type, mean = moyenne, lower.tail = T)
       
       p2 <- pmax - pmin
-      p2 <- p2*100
+
 
 #d)   Quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard pèse plus de 90 kg ?
       p3 <- pnorm(q = 90, sd = ecart_type, mean = moyenne, lower.tail = F)
-      p3 <- p3*100
+
 
 #e)   Quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard ait un poids qui diffère de la
 #     moyenne par moins de 5 kg ?
@@ -74,7 +74,7 @@ HER <- na.omit(HER)
       pmax <- pnorm(q = (moyenne+5), sd = ecart_type, mean = moyenne, lower.tail = T)
       
       p4 <- pmax - pmin
-      p4 <- p4*100
+
 
 #f)   Pour une autre enquête aléatoire portant sur 1000 citoyens, combien auraient probablement
 #     un poids supérieur à 70 kg ?
@@ -88,12 +88,12 @@ HER <- na.omit(HER)
       p7 <- pnorm(q = 70, sd = sd(HER_Homme$POIDS), mean = mean(HER_Homme$POIDS), lower.tail = F)
 
 
-#h)   Quelle est le poids maximum correspondant aux 50% des citoyen(ne)s les plus légers ?
+#h)   Quel est le poids maximum correspondant aux 50% des citoyen(ne)s les plus légers ?
       q1 <- qnorm(p = 0.50, sd = ecart_type, mean = moyenne, lower.tail = T)
       #q1 est bien égal à la moyenne
       
       
-#i)   Quelle est le poids minimum des 25% des citoyen(ne)s les plus lourds ?
+#i)   Quel est le poids minimum des 25% des citoyen(ne)s les plus lourds ?
       q2 <- qnorm(p = 0.25, sd = ecart_type, mean = moyenne, lower.tail = F)
 
       
