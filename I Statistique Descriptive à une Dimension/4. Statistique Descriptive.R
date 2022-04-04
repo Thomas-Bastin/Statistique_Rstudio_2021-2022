@@ -45,7 +45,7 @@ mediane <- median(Frozen)
 ecart_type <- sd(Frozen)
 
 # Calcul Ecart Type Echantillon sd() calcul donc uniquement les écart types d'échantillon, et non de population.
-ecart_type2 <- sqrt((sum((Frozen - mean(Frozen))^2) / (effectif - 1)))
+ecart_type2 <- sqrt((sum((Frozen - mean(Frozen))^2) / (effectif)))
 
 # On demande aussi de construire au fur et à mesure un vecteur grossistes.surgeles.echantillon.descriptive 
 # contenant l'effectif, la moyenne, l'écart-type (de l'échantillon) et la médiane 

@@ -35,10 +35,12 @@ sigma <- 0.25
 moyenneEchantillon <- 15.31
 N <- 15
 
+s <- sigma / sqrt(N)
+
 # a) Définir la plage de valeur acceptable pour moyenne d'échantillons
 
-q975 <- qnorm(0.975, mean = mu, sd = sigma)
-q025 <- qnorm(0.025, mean = mu, sd = sigma)
+q975 <- qnorm(0.975, mean = mu, sd = s)
+q025 <- qnorm(0.025, mean = mu, sd = s)
 intervalmoy1 <- data.frame(q025,q975)
 
 if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){
@@ -72,8 +74,8 @@ moyenneEchantillon <- mean(echantillon)
 ecart_typeEchantillon <- sd(echantillon)
 N <- length(echantillon)
 
-q975 <- qnorm(0.975, mean = mu, sd = sigma)
-q025 <- qnorm(0.025, mean = mu, sd = sigma)
+q975 <- qnorm(0.975, mean = mu, sd = s)
+q025 <- qnorm(0.025, mean = mu, sd = s)
 intervalmoy2 <- data.frame(q025,q975)
 
 if(moyenneEchantillon >= q025 && moyenneEchantillon <= q975){

@@ -50,7 +50,7 @@ dataRegionPorto <- subset(x = grossistes, subset = Region == 2)
 
 #4. Récupérer dans une variable les données correspondant à la région de Lisbonne 
 #   et à des achats de produits laitiers inférieurs à 500 m.u.
-dataLisbonneProduitLaitiers <- subset(x = grossistes, subset = Region == 1 && Milk < 500)
+dataLisbonneProduitLaitiers <- subset(x = grossistes, subset = Region == 1 & Milk < 500)
 
 #5. Combien y -a-t-il d'observations pour lesquelles toutes les variables ont une valeur connue ?
 nrowNotNaN <- nrow(na.omit(grossistes))

@@ -48,37 +48,41 @@ HER <- na.omit(HER)
       
       effectif <- length(HER$POIDS) 
       moyenne <- mean(HER$POIDS)
-      ecart_type <- sd(HER$POIDS)
+      s <- sd(HER$POIDS) * sqrt((HER$POIDS-1)/HER$POIDS)
+      sigmaChapeau <- sd(HER$POIDS)
+      #sd() retourne sigma chapeau, 
+      #sd() * sqrt((n-1)/n) retourne s
       
       hist(x = HER$POIDS, freq = F)
 
 #b)   Au niveau de la population, quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard
 #     ait un poids inférieure à 75 kg ?
-      p1 <- pnorm(q = 75, sd = ecart_type, mean = moyenne, lower.tail = T)
+      p1 <- pnorm(q = 75, sd = sigmaChapeau, mean = moyenne, lower.tail = T)
+      
       
 #c)   Quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard ait un poids compris dans la
 #     fourchette [80,95] ?
-      pmin <- pnorm(q = 80, sd = ecart_type, mean = moyenne, lower.tail = T)
-      pmax <- pnorm(q = 95, sd = ecart_type, mean = moyenne, lower.tail = T)
+      pmin <- pnorm(q = 80, sd = sigmaChapeau, mean = moyenne, lower.tail = T)
+      pmax <- pnorm(q = 95, sd = sigmaChapeau, mean = moyenne, lower.tail = T)
       
       p2 <- pmax - pmin
 
 
 #d)   Quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard pèse plus de 90 kg ?
-      p3 <- pnorm(q = 90, sd = ecart_type, mean = moyenne, lower.tail = F)
+      p3 <- pnorm(q = 90, sd = sigmaChapeau, mean = moyenne, lower.tail = F)
 
 
 #e)   Quelle est la probabilité qu'un citoyen(ne) choisi(e) au hasard ait un poids qui diffère de la
 #     moyenne par moins de 5 kg ?
-      pmin <- pnorm(q = (moyenne-5), sd = ecart_type, mean = moyenne, lower.tail = T)
-      pmax <- pnorm(q = (moyenne+5), sd = ecart_type, mean = moyenne, lower.tail = T)
+      pmin <- pnorm(q = (moyenne-5), sd = sigmaChapeau, mean = moyenne, lower.tail = T)
+      pmax <- pnorm(q = (moyenne+5), sd = sigmaChapeau, mean = moyenne, lower.tail = T)
       
       p4 <- pmax - pmin
 
 
 #f)   Pour une autre enquête aléatoire portant sur 1000 citoyens, combien auraient probablement
 #     un poids supérieur à 70 kg ?
-      p5 <- pnorm(q = 70, sd = ecart_type, mean = moyenne, lower.tail = F)
+      p5 <- pnorm(q = 70, sd = sigmaChapeau, mean = moyenne, lower.tail = F)
 
 #g)   Même question pour les hommes et pour les femmes.
       HER_Femme <- subset(HER, subset = SEXE == 'Femme')
@@ -89,15 +93,21 @@ HER <- na.omit(HER)
 
 
 #h)   Quel est le poids maximum correspondant aux 50% des citoyen(ne)s les plus légers ?
-      q1 <- qnorm(p = 0.50, sd = ecart_type, mean = moyenne, lower.tail = T)
+      q1 <- qnorm(p = 0.50, sd = sigmaChapeau, mean = moyenne, lower.tail = T)
       #q1 est bien égal à la moyenne
       
       
 #i)   Quel est le poids minimum des 25% des citoyen(ne)s les plus lourds ?
-      q2 <- qnorm(p = 0.25, sd = ecart_type, mean = moyenne, lower.tail = F)
+      q2 <- qnorm(p = 0.25, sd = sigmaChapeau, mean = moyenne, lower.tail = F)
 
       
 #j)   Quel poids moyen devrait-on atteindre à l'issue d'un programme diététique généralisé pour
 #     assurer qu'un(e) citoyen sur 10 seulement ait effectivement un poids supérieur à 85 kg ?
       
+      #utilisation central reduite
+      za <- qnorm(0.1, lower.tail = F)
+      za
+      
+      mu.new <- 85 - za*sigmaChapeau
+      mu.new
 # Pas réussi
